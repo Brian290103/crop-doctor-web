@@ -28,16 +28,31 @@ export const generateEmbeddings = async (
   value: string,
 ): Promise<Array<{ embedding: number[]; content: string }>> => {
   const chunks = generateChunks(value);
-  const { embeddings } = await embedMany({
-    model: embeddingModel,
-    values: chunks,
-    providerOptions: {
-      google: {
-        dimensions: 1024, // 👈 force 1024-dim instead of 3072
+
+  const results: Array<{ embedding: number[]; content: string }> = [];
+
+  // Batch size limit
+  const BATCH_SIZE = 100;
+
+  for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
+    const batch = chunks.slice(i, i + BATCH_SIZE);
+
+    const { embeddings } = await embedMany({
+      model: embeddingModel,
+      values: batch,
+      providerOptions: {
+        google: {
+          dimensions: 1024,
+        },
       },
-    },
-  });
-  return embeddings.map((e, i) => ({ content: chunks[i], embedding: e }));
+    });
+
+    embeddings.forEach((e, idx) => {
+      results.push({ content: batch[idx], embedding: e });
+    });
+  }
+
+  return results;
 };
 
 export const generateEmbedding = async (value: string): Promise<number[]> => {
@@ -89,6 +104,7 @@ export const findRelevantContent1 = async (
 
   return similarGuides;
 };
+
 export const findRelevantContent = async (
   userQuery: string,
   cropId?: string,
