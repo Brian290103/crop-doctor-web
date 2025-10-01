@@ -12,6 +12,7 @@ export const getSources = async (cropId?: string) => {
     ? `${BASE_URL}/api/sources?cropId=${cropId}`
     : `${BASE_URL}/api/sources`;
   const res = await fetch(url);
+  console.log("res", res);
   return res.json();
 };
 

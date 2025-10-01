@@ -1,21 +1,10 @@
-import { relations } from "drizzle-orm";
-import {
-  index,
-  pgTable,
-  text,
-  uuid,
-  varchar,
-  vector,
-} from "drizzle-orm/pg-core";
-import { sources } from "./source.schema";
+import { pgTable, uuid, text, vector, index } from "drizzle-orm/pg-core";
 
 export const embeddings = pgTable(
   "embeddings",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    sourceId: uuid("source_id").references(() => sources.id, {
-      onDelete: "cascade",
-    }),
+    sourceId: uuid("source_id").notNull(), // remove direct reference to sources here
     content: text("content").notNull(),
     embedding: vector("embedding", { dimensions: 768 }).notNull(),
   },
@@ -26,10 +15,3 @@ export const embeddings = pgTable(
     ),
   }),
 );
-
-export const embeddingsRelations = relations(embeddings, ({ one }) => ({
-  source: one(sources, {
-    fields: [embeddings.sourceId],
-    references: [sources.id],
-  }),
-}));

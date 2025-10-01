@@ -1,4 +1,3 @@
-import { relations } from "drizzle-orm";
 import {
   jsonb,
   pgEnum,
@@ -10,7 +9,6 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { crops } from "./crop.schema";
-import { embeddings } from "./embedding.schema";
 
 export const resourceTypeEnum = pgEnum("resource_type", [
   "text",
@@ -32,27 +30,19 @@ export const sources = pgTable("sources", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const sourcesRelations = relations(sources, ({ many }) => ({
-  embeddings: many(embeddings),
-}));
-
 export const insertSourcesSchema = createInsertSchema(sources).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export const selectEmbeddingsSchema = createSelectSchema(embeddings).omit({
-  sourceId: true,
-  embedding: true,
-});
-
+// We don’t import embeddings here anymore
 export const selectSourcesSchema = createSelectSchema(sources)
   .extend({
     metadata: z.any().optional(),
     title: z.string().min(5),
     content: z.string().min(5),
-    embeddings: z.array(selectEmbeddingsSchema).optional(),
+    // embeddings will be added in the relations layer
   })
   .omit({
     createdAt: true,
