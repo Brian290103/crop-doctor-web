@@ -16,12 +16,12 @@ RUN bun install --frozen-lockfile
 COPY . .
 
 # ✅ Supply dummy envs so Next.js build doesn’t crash
-ENV NEXT_PUBLIC_SUPABASE_URL=dummy \
-    NEXT_PUBLIC_SUPABASE_ANON_KEY=dummy \
-    DATABASE_URL=dummy \
-    GOOGLE_GENERATIVE_AI_API_KEY=dummy \
-    FIRECRAWL_API_KEY=dummy \
-    LLAMA_CLOUD_API_KEY=dummy
+ENV NEXT_PUBLIC_SUPABASE_URL=https://wwlehrlckcxxitlzayda.supabase.co \
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3bGVocmxja2N4eGl0bHpheWRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMTczMDksImV4cCI6MjA2OTY5MzMwOX0.C6r_RMBAKWKK-4eyR6khdaap1H-_ouo6iqpb3GYNrvg \
+    DATABASE_URL='postgresql://neondb_owner:npg_EgfybGC84tiQ@ep-delicate-sound-ad1jt6wp-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' \
+    GOOGLE_GENERATIVE_AI_API_KEY=duAIzaSyBOemHBi1K-BJWrHlPTsF0hLj7V0U_PxN4mmy \
+    FIRECRAWL_API_KEY=fc-1a31cc348432485087bbefd8707ad612 \
+    LLAMA_CLOUD_API_KEY=llx-LGRbMFmIdUj3EgfuAxztz6k86atOkdv42Fkf3JBFNwqG82S1
 
 RUN bun run build
 
