@@ -16,9 +16,12 @@ RUN bun install --frozen-lockfile
 COPY . .
 
 # ✅ Supply dummy envs so Next.js build doesn’t crash
-ENV NEXT_PUBLIC_SUPABASE_URL=dummy
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=dummy
-ENV DATABASE_URL=dummy
+ENV NEXT_PUBLIC_SUPABASE_URL=dummy \
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=dummy \
+    DATABASE_URL=dummy \
+    GOOGLE_GENERATIVE_AI_API_KEY=dummy \
+    FIRECRAWL_API_KEY=dummy \
+    LLAMA_CLOUD_API_KEY=dummy
 
 RUN bun run build
 
