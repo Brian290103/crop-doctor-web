@@ -1,13 +1,13 @@
-import { findRelevantContent, findSimilarCrop } from "@/lib/embeddings";
 import { google } from "@ai-sdk/google";
 import {
   convertToModelMessages,
   stepCountIs,
   streamText,
   tool,
-  UIMessage,
+  type UIMessage,
 } from "ai";
 import z from "zod";
+import { findRelevantContent, findSimilarCrop } from "@/lib/embeddings";
 
 export const maxDuration = 30;
 

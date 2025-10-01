@@ -1,13 +1,8 @@
-"use client"
+"use client";
 
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs"
-import AddSourcesTab from "./add-sources-tab"
-import SourcesTab from "./sources-tab"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AddSourcesTab from "./add-sources-tab";
+import SourcesTab from "./sources-tab";
 
 const SourcesClientPage = () => {
   return (
@@ -23,7 +18,7 @@ const SourcesClientPage = () => {
         <AddSourcesTab />
       </TabsContent>
     </Tabs>
-  )
-}
+  );
+};
 
-export default SourcesClientPage
+export default SourcesClientPage;

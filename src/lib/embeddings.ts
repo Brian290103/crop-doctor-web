@@ -1,8 +1,8 @@
-import { db } from "@/db/drizzle";
-import { crops, embeddings, sources } from "@/db/schema";
 import { google } from "@ai-sdk/google";
 import { embed, embedMany } from "ai";
 import { and, cosineDistance, desc, eq, gt, sql } from "drizzle-orm";
+import { db } from "@/db/drizzle";
+import { crops, embeddings, sources } from "@/db/schema";
 
 const embeddingModel = google.textEmbedding("text-embedding-004");
 

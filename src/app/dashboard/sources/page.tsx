@@ -1,9 +1,7 @@
 import SourcesClientPage from "./sources.client.page";
 
 const SourcesPage = () => {
-  return (
-    <SourcesClientPage />
-  )
-}
+  return <SourcesClientPage />;
+};
 
-export default SourcesPage
+export default SourcesPage;

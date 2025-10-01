@@ -1,9 +1,9 @@
-import { trainSourceEmbeddings } from "@/app/actions/source.actions";
 import { NextResponse } from "next/server";
+import { trainSourceEmbeddings } from "@/app/actions/source.actions";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const sourceId = params.id;
@@ -18,7 +18,7 @@ export async function POST(
     console.error("Error in /api/sources/[id]/embed:", error);
     return NextResponse.json(
       { error: "Failed to process embedding request." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

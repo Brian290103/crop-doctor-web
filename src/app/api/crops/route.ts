@@ -1,7 +1,7 @@
+import { NextResponse } from "next/server";
 import { db } from "@/db/drizzle";
 import { crops } from "@/db/schemas/crop.schema";
 import { generateEmbedding } from "@/lib/embeddings";
-import { NextResponse } from "next/server";
 
 export async function GET() {
   const allCrops = await db.select().from(crops);

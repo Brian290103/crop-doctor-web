@@ -1,11 +1,17 @@
-import { selectSourcesSchema } from "@/db/schemas/source.schema";
-import { z } from "zod";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { deleteSource, trainSourceEmbeddings } from "@/app/actions/source.actions";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
+import type { z } from "zod";
+import {
+  deleteSource,
+  trainSourceEmbeddings,
+} from "@/app/actions/source.actions";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +23,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import type { selectSourcesSchema } from "@/db/schemas/source.schema";
 
 type Source = z.infer<typeof selectSourcesSchema>;
 
@@ -34,7 +42,7 @@ export function SourceItem({ source }: SourceItemProps) {
     const result = await trainSourceEmbeddings(source.id);
     if (result.success) {
       toast.success(result.message);
-      queryClient.invalidateQueries({ queryKey: ['sources', source.cropId] });
+      queryClient.invalidateQueries({ queryKey: ["sources", source.cropId] });
     } else {
       toast.error(result.message);
     }
@@ -47,7 +55,7 @@ export function SourceItem({ source }: SourceItemProps) {
       const result = await deleteSource(source.id);
       if (result) {
         toast.success("Source deleted successfully.");
-        queryClient.invalidateQueries({ queryKey: ['sources', source.cropId] });
+        queryClient.invalidateQueries({ queryKey: ["sources", source.cropId] });
       }
     } catch (error) {
       console.error("Error deleting source:", error);
@@ -59,10 +67,18 @@ export function SourceItem({ source }: SourceItemProps) {
 
   return (
     <div className="space-y-2 text-sm">
-      <p><strong>Title:</strong> {source.title}</p>
-      <p><strong>Slug:</strong> {source.slug}</p>
-      <p><strong>Crop ID:</strong> {source.cropId}</p>
-      <p><strong>Type:</strong> {source.type}</p>
+      <p>
+        <strong>Title:</strong> {source.title}
+      </p>
+      <p>
+        <strong>Slug:</strong> {source.slug}
+      </p>
+      <p>
+        <strong>Crop ID:</strong> {source.cropId}
+      </p>
+      <p>
+        <strong>Type:</strong> {source.type}
+      </p>
 
       <div className="flex gap-2">
         {source.embeddings && source.embeddings.length === 0 && (
@@ -106,7 +122,9 @@ export function SourceItem({ source }: SourceItemProps) {
           <AccordionItem value="metadata">
             <AccordionTrigger>Metadata</AccordionTrigger>
             <AccordionContent>
-              <pre className="whitespace-pre-wrap">{JSON.stringify(source.metadata, null, 2)}</pre>
+              <pre className="whitespace-pre-wrap">
+                {JSON.stringify(source.metadata, null, 2)}
+              </pre>
             </AccordionContent>
           </AccordionItem>
         )}

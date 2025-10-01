@@ -1,5 +1,10 @@
 "use client";
 
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { GlobeIcon, MessageSquare, MicIcon } from "lucide-react";
+import Image from "next/image";
+import React, { useState } from "react";
 import {
   Conversation,
   ConversationContent,
@@ -12,14 +17,6 @@ import {
   MessageAvatar,
   MessageContent,
 } from "@/components/ai-elements/message";
-import { Response } from "@/components/ai-elements/response";
-import {
-  Tool,
-  ToolContent,
-  ToolHeader,
-  ToolInput,
-  ToolOutput,
-} from "@/components/ai-elements/tool";
 import {
   PromptInput,
   PromptInputActionAddAttachments,
@@ -41,12 +38,14 @@ import {
   PromptInputTools,
   usePromptInputAttachments,
 } from "@/components/ai-elements/prompt-input";
-import { GlobeIcon, MicIcon, MessageSquare } from "lucide-react";
-import { useState } from "react";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import Image from "next/image";
-import React from "react";
+import { Response } from "@/components/ai-elements/response";
+import {
+  Tool,
+  ToolContent,
+  ToolHeader,
+  ToolInput,
+  ToolOutput,
+} from "@/components/ai-elements/tool";
 import {
   Accordion,
   AccordionContent,

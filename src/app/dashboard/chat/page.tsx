@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
-import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import Image from "next/image";
+import { useRef, useState } from "react";
 
 async function convertFilesToDataURLs(files: FileList) {
   return Promise.all(
     Array.from(files).map(
-      file =>
+      (file) =>
         new Promise<{
-          type: 'file';
+          type: "file";
           mediaType: string;
           url: string;
         }>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => {
             resolve({
-              type: 'file',
+              type: "file",
               mediaType: file.type,
               url: reader.result as string,
             });
@@ -30,26 +30,26 @@ async function convertFilesToDataURLs(files: FileList) {
 }
 
 export default function Chat() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [files, setFiles] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { messages, sendMessage } = useChat({
     transport: new DefaultChatTransport({
-      api: '/api/chat',
+      api: "/api/chat",
     }),
   });
 
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      {messages.map(m => (
+      {messages.map((m) => (
         <div key={m.id} className="whitespace-pre-wrap">
-          {m.role === 'user' ? 'User: ' : 'AI: '}
+          {m.role === "user" ? "User: " : "AI: "}
           {m.parts.map((part, index) => {
-            if (part.type === 'text') {
+            if (part.type === "text") {
               return <span key={`${m.id}-text-${index}`}>{part.text}</span>;
             }
-            if (part.type === 'file' && part.mediaType?.startsWith('image/')) {
+            if (part.type === "file" && part.mediaType?.startsWith("image/")) {
               return (
                 <Image
                   key={`${m.id}-image-${index}`}
@@ -60,7 +60,7 @@ export default function Chat() {
                 />
               );
             }
-            if (part.type === 'file' && part.mediaType === 'application/pdf') {
+            if (part.type === "file" && part.mediaType === "application/pdf") {
               return (
                 <iframe
                   key={`${m.id}-pdf-${index}`}
@@ -78,7 +78,7 @@ export default function Chat() {
 
       <form
         className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl space-y-2"
-        onSubmit={async event => {
+        onSubmit={async (event) => {
           event.preventDefault();
 
           const fileParts =
@@ -87,15 +87,15 @@ export default function Chat() {
               : [];
 
           sendMessage({
-            role: 'user',
-            parts: [{ type: 'text', text: input }, ...fileParts],
+            role: "user",
+            parts: [{ type: "text", text: input }, ...fileParts],
           });
 
-          setInput('');
+          setInput("");
           setFiles(undefined);
 
           if (fileInputRef.current) {
-            fileInputRef.current.value = '';
+            fileInputRef.current.value = "";
           }
         }}
       >
@@ -103,7 +103,7 @@ export default function Chat() {
           type="file"
           accept="image/*,application/pdf"
           className=""
-          onChange={event => {
+          onChange={(event) => {
             if (event.target.files) {
               setFiles(event.target.files);
             }
@@ -115,7 +115,7 @@ export default function Chat() {
           className="w-full p-2"
           value={input}
           placeholder="Say something..."
-          onChange={e => setInput(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
         />
       </form>
     </div>

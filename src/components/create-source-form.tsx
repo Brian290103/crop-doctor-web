@@ -1,20 +1,34 @@
-'use client';
+"use client";
 
-import { getCrops } from "@/app/actions/crop.actions";
-import { scrapeWebsite } from "@/app/actions/parse.actions";
-import { createSource } from "@/app/actions/source.actions";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { resourceTypeEnum } from "@/db/schemas/source.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { getCrops } from "@/app/actions/crop.actions";
+import { scrapeWebsite } from "@/app/actions/parse.actions";
+import { createSource } from "@/app/actions/source.actions";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { resourceTypeEnum } from "@/db/schemas/source.schema";
 
 const formSchema = z.object({
   cropId: z.string().uuid("Invalid Crop ID"),
@@ -31,7 +45,7 @@ export function CreateSourceForm() {
   const queryClient = useQueryClient();
 
   const { data: crops, isPending: isCropsPending } = useQuery({
-    queryKey: ['crops'],
+    queryKey: ["crops"],
     queryFn: getCrops,
   });
 
@@ -59,7 +73,7 @@ export function CreateSourceForm() {
       }
       console.log("Source creation response:", data);
       form.reset();
-      queryClient.invalidateQueries({ queryKey: ['sources'] });
+      queryClient.invalidateQueries({ queryKey: ["sources"] });
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to create source.");
@@ -116,7 +130,9 @@ export function CreateSourceForm() {
                 </FormControl>
                 <SelectContent>
                   {isCropsPending ? (
-                    <SelectItem value="" disabled>Loading crops...</SelectItem>
+                    <SelectItem value="" disabled>
+                      Loading crops...
+                    </SelectItem>
                   ) : (
                     crops?.map((crop: { id: string; name: string }) => (
                       <SelectItem key={crop.id} value={crop.id}>
@@ -126,7 +142,9 @@ export function CreateSourceForm() {
                   )}
                 </SelectContent>
               </Select>
-              <FormDescription>Select the crop this source belongs to.</FormDescription>
+              <FormDescription>
+                Select the crop this source belongs to.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -151,7 +169,9 @@ export function CreateSourceForm() {
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>The type of the source (e.g., text, website).</FormDescription>
+              <FormDescription>
+                The type of the source (e.g., text, website).
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -164,23 +184,39 @@ export function CreateSourceForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {selectedType === "website" ? "Website URL" : "File Path/Name"}
+                  {selectedType === "website"
+                    ? "Website URL"
+                    : "File Path/Name"}
                 </FormLabel>
                 <div className="flex space-x-2">
                   <FormControl>
                     <Input
-                      placeholder={selectedType === "website" ? "https://example.com" : "e.g., document.pdf"}
+                      placeholder={
+                        selectedType === "website"
+                          ? "https://example.com"
+                          : "e.g., document.pdf"
+                      }
                       {...field}
                     />
                   </FormControl>
                   {selectedType === "website" && (
-                    <Button type="button" onClick={handleScrape} disabled={isScraping || !urlValue}>
-                      {isScraping ? <Loader2 className="h-4 w-4 animate-spin" /> : "Scrape"}
+                    <Button
+                      type="button"
+                      onClick={handleScrape}
+                      disabled={isScraping || !urlValue}
+                    >
+                      {isScraping ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        "Scrape"
+                      )}
                     </Button>
                   )}
                 </div>
                 <FormDescription>
-                  {selectedType === "website" ? "Enter the URL to fetch content from." : "Enter the path or name of the file."}
+                  {selectedType === "website"
+                    ? "Enter the URL to fetch content from."
+                    : "Enter the path or name of the file."}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -225,7 +261,9 @@ export function CreateSourceForm() {
               <FormControl>
                 <Textarea placeholder="{}" {...field} />
               </FormControl>
-              <FormDescription>Optional JSON metadata for the source.</FormDescription>
+              <FormDescription>
+                Optional JSON metadata for the source.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

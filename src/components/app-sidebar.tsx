@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
 import {
-    IconDatabase,
-    IconFileWord,
-    IconPlant,
-    IconReport
-} from "@tabler/icons-react"
-import * as React from "react"
+  IconDatabase,
+  IconFileWord,
+  IconPlant,
+  IconReport,
+} from "@tabler/icons-react";
+import Link from "next/link";
+import type * as React from "react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { NavUser } from "./nav-user";
 
- import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
-import { NavUser } from "./nav-user"
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
- 
+
   documents: [
     {
       name: "Dashboard",
@@ -45,7 +45,7 @@ const data = {
       icon: IconFileWord,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -66,27 +66,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-      <SidebarGroup>
-      <SidebarGroupContent className="flex flex-col gap-2">
-     
-        <SidebarMenu>
-          {data.documents.map((item) => (
-              <SidebarMenuItem key={Math.random()}>
-              <SidebarMenuButton asChild tooltip={item.name}>
-                    <Link href={item.url} >
-                {item.icon && <item.icon />}
-                <span>{item.name}</span>
-            </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
-       </SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent className="flex flex-col gap-2">
+            <SidebarMenu>
+              {data.documents.map((item) => (
+                <SidebarMenuItem key={Math.random()}>
+                  <SidebarMenuButton asChild tooltip={item.name}>
+                    <Link href={item.url}>
+                      {item.icon && <item.icon />}
+                      <span>{item.name}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

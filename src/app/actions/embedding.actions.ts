@@ -1,9 +1,9 @@
-'use server';
+"use server";
 
+import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
 import { embeddings, sources } from "@/db/schema";
 import { generateEmbeddings } from "@/lib/embeddings";
-import { eq } from "drizzle-orm";
 
 export const createEmbeddings = async (sourceId: string) => {
   try {

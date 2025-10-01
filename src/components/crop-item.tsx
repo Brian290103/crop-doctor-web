@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { updateCrop, deleteCrop } from '@/app/actions/crop.actions';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Check, Pencil, Trash, Loader2 } from 'lucide-react';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Check, Loader2, Pencil, Trash } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { deleteCrop, updateCrop } from "@/app/actions/crop.actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface CropItemProps {
   crop: { id: string; name: string };
@@ -22,23 +22,23 @@ export function CropItem({ crop, onClick }: CropItemProps) {
   const { mutate: update, isPending: isUpdating } = useMutation({
     mutationFn: () => updateCrop(crop.id, { name }),
     onSuccess: () => {
-      toast.success('Crop updated successfully');
+      toast.success("Crop updated successfully");
       setIsEditing(false);
-      queryClient.invalidateQueries({ queryKey: ['crops'] });
+      queryClient.invalidateQueries({ queryKey: ["crops"] });
     },
     onError: () => {
-      toast.error('Failed to update crop');
+      toast.error("Failed to update crop");
     },
   });
 
   const { mutate: remove, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteCrop(crop.id),
     onSuccess: () => {
-      toast.success('Crop deleted successfully');
-      queryClient.invalidateQueries({ queryKey: ['crops'] });
+      toast.success("Crop deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["crops"] });
     },
     onError: () => {
-      toast.error('Failed to delete crop');
+      toast.error("Failed to delete crop");
     },
   });
 
@@ -53,10 +53,10 @@ export function CropItem({ crop, onClick }: CropItemProps) {
     };
 
     if (!isUpdating && !isDeleting) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isEditing, crop.name, isUpdating, isDeleting]);
 
@@ -67,7 +67,11 @@ export function CropItem({ crop, onClick }: CropItemProps) {
   };
 
   return (
-    <li ref={itemRef} className="flex items-center justify-between py-1 cursor-pointer" onClick={() => onClick(crop.id)}>
+    <li
+      ref={itemRef}
+      className="flex items-center justify-between py-1 cursor-pointer"
+      onClick={() => onClick(crop.id)}
+    >
       {isEditing ? (
         <Input
           type="text"
@@ -81,17 +85,52 @@ export function CropItem({ crop, onClick }: CropItemProps) {
       )}
       <div className="flex items-center gap-2">
         {isEditing ? (
-          <Button size="icon" variant="ghost" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); handleUpdate(); }} disabled={isUpdating}>
-            {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-8 w-8"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleUpdate();
+            }}
+            disabled={isUpdating}
+          >
+            {isUpdating ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Check className="h-4 w-4" />
+            )}
           </Button>
         ) : (
-          <Button size="icon" variant="ghost" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-8 w-8"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+            }}
+          >
             <Pencil className="h-4 w-4" />
           </Button>
         )}
-        <Button size="icon" variant="ghost" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); remove(); }} disabled={isDeleting}>
-          {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}
+        <Button
+          size="icon"
+          variant="ghost"
+          className="h-8 w-8"
+          onClick={(e) => {
+            e.stopPropagation();
+            remove();
+          }}
+          disabled={isDeleting}
+        >
+          {isDeleting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Trash className="h-4 w-4" />
+          )}
         </Button>
       </div>
     </li>
   );
+}
