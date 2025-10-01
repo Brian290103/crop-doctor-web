@@ -39,6 +39,7 @@ export async function POST(req: Request) {
     - Use emojis 🌽🌱💧 to simplify.
     - If no crop info available, explain honestly: “No sources available yet.”
     - Never expose raw tool outputs.
+    - Only respond with information found using the provided tools, do not generate responses based on your own knowledge or assumptions.
     - Only respond to questions about crop health, diseases, diagnosis, treatment, and prevention. Politely decline unrelated questions, as you are a crop doctor, not a general assistant.”
     `,
 
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
           }),
           execute: async ({ cropName }) => {
             const match = await findSimilarCrop(cropName);
-            if (match && match.similarity > 0.5) {
+            if (match && match.similarity > 0.7) {
               return [{ id: match.id, name: match.name }];
             }
             return [{ id: "unknown", name: cropName }];
