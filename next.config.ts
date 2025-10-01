@@ -6,6 +6,9 @@ const requiredEnvs = [
   "DATABASE_URL",
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  "GOOGLE_GENERATIVE_AI_API_KEY",
+  "FIRECRAWL_API_KEY",
+  "LLAMA_CLOUD_API_KEY",
 ];
 
 for (const key of requiredEnvs) {
