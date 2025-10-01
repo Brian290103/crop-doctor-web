@@ -88,5 +88,6 @@
   },
   "engines": {
     "bun": ">=1.0.0"
-  }
+  },
+"packageManager": "bun@1.2.19"
 }
