@@ -14,6 +14,12 @@ RUN bun install --frozen-lockfile
 # 3. Build Next.js app
 # ---------------------------
 COPY . .
+
+# ✅ Supply dummy envs so Next.js build doesn’t crash
+ENV NEXT_PUBLIC_SUPABASE_URL=dummy
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=dummy
+ENV DATABASE_URL=dummy
+
 RUN bun run build
 
 # ---------------------------
@@ -27,6 +33,9 @@ COPY --from=base /app/package.json ./package.json
 COPY --from=base /app/.next ./.next
 COPY --from=base /app/public ./public
 COPY --from=base /app/node_modules ./node_modules
+
+# ✅ Now real env vars will be injected by Coolify at runtime
+ENV NODE_ENV=production
 
 # Expose port
 EXPOSE 3000
