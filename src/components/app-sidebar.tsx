@@ -29,11 +29,11 @@ const data = {
   },
 
   documents: [
-    {
-      name: "Dashboard",
-      url: "/dashboard",
-      icon: IconDatabase,
-    },
+    // {
+    //   name: "Dashboard",
+    //   url: "/dashboard",
+    //   icon: IconDatabase,
+    // },
     {
       name: "Sources",
       url: "/dashboard/sources",
@@ -83,9 +83,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      {/*<SidebarFooter>
         <NavUser user={data.user} />
-      </SidebarFooter>
+      </SidebarFooter>*/}
     </Sidebar>
   );
 }

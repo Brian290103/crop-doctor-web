@@ -1,5 +1,6 @@
-const DashboardPage = () => {
-  return <div>Page</div>;
-};
+// app/dashboard/page.tsx
+import { redirect } from "next/navigation";
 
-export default DashboardPage;
+export default function DashboardPage() {
+  redirect("/dashboard/sources");
+}
