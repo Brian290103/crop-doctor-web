@@ -24,16 +24,7 @@ for (const key of requiredEnvs) {
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "github.com",
-      },
-      {
-        protocol: "https",
-        hostname: "wwlehrlckcxxitlzayda.supabase.co",
-      },
-    ],
+    unoptimized: true,
   },
   typescript: {
     ignoreBuildErrors: true,
