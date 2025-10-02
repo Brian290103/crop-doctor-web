@@ -3,17 +3,37 @@ import {
   convertToModelMessages,
   stepCountIs,
   streamText,
-  tool,
   type UIMessage,
 } from "ai";
-import z from "zod";
-import { findRelevantContent, findSimilarCrop } from "@/lib/embeddings";
+import { createCropDoctorTools } from "./tools";
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
     const { messages }: { messages: UIMessage[] } = await req.json();
+    let lastImageURL: string | undefined;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const message = messages[i];
+      if (message.parts) {
+        for (const part of message.parts) {
+          if (
+            part.type === "file" &&
+            typeof part.url === "string" &&
+            part.mediaType?.startsWith("image/")
+          ) {
+            lastImageURL = part.url;
+            // Found the last image URL, no need to search further
+            break;
+          }
+        }
+      }
+      if (lastImageURL) {
+        break; // Found an image in this message, so it's the last one chronologically
+      }
+    }
+
+    console.log("lastImageURL", lastImageURL);
 
     const result = streamText({
       model: google("gemini-2.5-pro"),
@@ -26,77 +46,45 @@ export async function POST(req: Request) {
         },
       },
       system: `
-    You are Crop Doctor 🌱, an AI agronomist acting like a doctor for plants.
-    Always follow the flow: Diagnosis → Treatment → Prevention.
+        You are Crop Doctor 🌱, an AI agronomist acting like a doctor for plants.
+        Always follow the flow: **Diagnosis → Treatment → Prevention**.
 
-    Rules:
-    - If image: analyze crop + symptoms → confirm crop ID → search knowledge base for diseases.
-    - If text: same logic with described symptoms.
-    - Give probable diagnosis (confidence: high, medium, or low, severity, explanation).
-    - If uncertain, provide differential diagnosis + farmer-friendly checks.
-    - Treatment: include organic + chemical options, dosage, safety tips.
-    - Prevention: resistant varieties, field practices, irrigation, early signs.
-    - Use emojis 🌽🌱💧 to simplify.
-    - If no crop info available, explain honestly: “No sources available yet.”
-    - Never expose raw tool outputs.
-    - Only respond with information found using the provided tools, do not generate responses based on your own knowledge or assumptions.
-    - Only respond to questions about crop health, diseases, diagnosis, treatment, and prevention. Politely decline unrelated questions, as you are a crop doctor, not a general assistant.”
-    `,
+        Rules for reasoning and tool use:
+        - If an **image** is provided:
+          1. Determine if the image is of a plant. If not, politely say so.
+          2. If it is a plant, determine if it is **healthy** or **sick**.
+             - If healthy: respond with "The plant appears healthy" + give prevention and best practices.
+             - If sick:
+               - Use \`getCropName\` to identify the crop type.
+               - Then use \`getDiagnosis\` with the *exact* uploaded image URL to analyze symptoms, confirm the diagnosis, and suggest treatment + prevention.
+               - Then use \`getCropId\` to map the crop to the internal ID.
+               - Optionally call \`getInformation\` if you need more agricultural details for a complete farmer-friendly answer.
+        - If **no image** (text input):
+          1. Analyze the symptoms described.
+          2. Use \`getCropId\` to resolve crop.
+          3. Use \`getInformation\` to expand with relevant knowledge base results.
+
+        Response requirements:
+        - Always include probable diagnosis (confidence: high, medium, or low), severity, explanation, and the crop name.
+        - If uncertain: provide differential diagnosis + farmer-friendly checks farmers can perform themselves.
+        - Treatment: include organic and chemical options, dosage, and safety tips.
+        - Prevention: resistant varieties, cultural practices, irrigation, and early warning signs.
+        - Use emojis 🌽🌱💧 for clarity.
+        - If no crop info available, say honestly: “No sources available yet.”
+        - Never fabricate or invent image URLs. Always use the exact uploaded URL.
+        - Never expose raw tool outputs. Rewrite responses in simple farmer-friendly language.
+        - Only answer crop health, diseases, diagnosis, treatment, and prevention. Politely decline unrelated questions.
+
+      `,
 
       stopWhen: stepCountIs(6),
 
       messages: convertToModelMessages(messages),
-      tools: {
-        analyzeImage: tool({
-          description: `
-          Analyze an uploaded image of a crop.
-          Identify the crop type, visible symptoms, and possible diseases.
-        `,
-          inputSchema: z.object({
-            imageUrl: z.string().url().describe("URL of the uploaded image"),
-          }),
-          execute: async ({ imageUrl }) => {
-            return {
-              imageUrl,
-            };
-          },
-        }),
-
-        getCropId: tool({
-          description:
-            "Resolve a crop name to an internal crop ID. Use this before calling getInformation.",
-          inputSchema: z.object({
-            cropName: z
-              .string()
-              .describe("The identified crop name, e.g., maize, beans"),
-          }),
-          execute: async ({ cropName }) => {
-            const match = await findSimilarCrop(cropName);
-            if (match && match.similarity > 0.7) {
-              return [{ id: match.id, name: match.name }];
-            }
-            return [{ id: "unknown", name: cropName }];
-          },
-        }),
-
-        getInformation: tool({
-          description:
-            "Retrieve agricultural knowledge using a query and cropId.",
-          inputSchema: z.object({
-            cropId: z.string().describe("Resolved crop ID from getCropId"),
-            query: z
-              .string()
-              .describe("The user’s question or the diagnosis details"),
-          }),
-          execute: async ({ cropId, query }) => {
-            return findRelevantContent(query, cropId);
-          },
-        }),
-      },
+      tools: createCropDoctorTools(lastImageURL),
     });
 
-    console.log("reasoningText:", result.reasoningText);
-    console.log("result:", result);
+    // console.log("reasoningText:", result.reasoningText);
+    // console.log("result:", result);
     return result.toUIMessageStreamResponse({ sendReasoning: true });
   } catch (error) {
     console.error("An error occurred:", error);
