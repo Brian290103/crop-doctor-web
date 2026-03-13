@@ -3,32 +3,32 @@ import { Eye, MessageSquare, BookOpen, ListChecks, GitCompare, Shield } from 'lu
 const features = [
   {
     name: 'Visual Diagnosis',
-    description: 'Analyze images to identify crop type, symptoms, and potential diseases.',
+    description: 'Upload a photo of your affected crop and let our AI instantly identify the disease, crop type, and severity level with high accuracy.',
     icon: Eye,
   },
   {
     name: 'Text-Based Consultation',
-    description: 'Describe symptoms and get a diagnosis directly in the app.',
+    description: 'Not able to take a photo? Simply describe your crop symptoms in detail and our AI will analyze and provide a diagnosis.',
     icon: MessageSquare,
   },
   {
     name: 'Comprehensive Knowledge Base',
-    description: 'Access a vast library of agricultural knowledge, curated by our admin team.',
+    description: 'Access a curated library of agricultural knowledge with research-backed information about crops, diseases, and treatments.',
     icon: BookOpen,
   },
   {
     name: 'Actionable Recommendations',
-    description: 'Receive clear, easy-to-follow advice for both organic and chemical treatments.',
+    description: 'Receive clear, step-by-step treatment advice including both organic and chemical options with dosages and safety tips.',
     icon: ListChecks,
   },
   {
     name: 'Differential Diagnosis',
-    description: 'If the AI is uncertain, it provides a list of possible diseases to help the farmer investigate further.',
+    description: 'When uncertain, the AI provides multiple possible diagnoses to help you investigate and confirm the correct disease.',
     icon: GitCompare,
   },
   {
     name: 'Prevention Strategies',
-    description: 'Learn how to protect crops from future diseases with expert advice.',
+    description: 'Learn expert advice on crop protection, resistant varieties, cultural practices, and early warning signs to prevent future outbreaks.',
     icon: Shield,
   },
 ];
@@ -43,7 +43,7 @@ export function Features() {
             Powerful Tools for Healthy Crops
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Everything you need to diagnose and treat crop diseases, right at your fingertips.
+            Everything you need to diagnose and treat crop diseases with expert-backed AI assistance, all in one intuitive platform.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">

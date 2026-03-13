@@ -15,9 +15,7 @@ export function Hero() {
           </h1>
           <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
             <p className="text-lg leading-8 text-gray-600">
-              Crop Doctor is an AI-powered mobile app for farmers, providing
-              instant crop disease diagnosis and treatment advice. This web
-              portal is the administrative dashboard for managing the AI.
+              Crop Doctor is an AI-powered platform for farmers, providing instant crop disease diagnosis and treatment advice. Empower your farm with intelligent, science-backed agricultural solutions.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center gap-6">
               <Link href="/chat">
