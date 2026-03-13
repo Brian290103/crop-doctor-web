@@ -284,6 +284,7 @@ export default function ChatPage() {
             onChange={handleImageUpload}
             accept="image/*"
             className="hidden"
+              capture="environment"
             disabled={isUploadingImage}
           />
           <button
