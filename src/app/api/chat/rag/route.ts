@@ -1,4 +1,6 @@
 import { cohere } from "@ai-sdk/cohere";
+import { google } from "@ai-sdk/google";
+
 import {
   convertToModelMessages,
   stepCountIs,
@@ -12,7 +14,9 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   try {
     const { messages }: { messages: UIMessage[] } = await req.json();
+    console.log("messages", messages);
     let lastImageURL: string | undefined;
+    console.log("lastImageURL", lastImageURL);
     for (let i = messages.length - 1; i >= 0; i--) {
       const message = messages[i];
       if (message.parts) {
@@ -36,7 +40,7 @@ export async function POST(req: Request) {
     console.log("lastImageURL", lastImageURL);
 
     const result = streamText({
-      model: cohere("command-a-03-2025"),
+      model: google("gemini-2.5-flash"),
       system: `
         You are Crop Doctor 🌱, an AI agronomist acting like a doctor for plants.
         Always follow the flow: **Diagnosis → Treatment → Prevention**.

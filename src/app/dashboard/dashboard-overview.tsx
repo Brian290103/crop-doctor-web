@@ -7,6 +7,14 @@ import {
   Sprout,
   TrendingUp,
   Zap,
+  Eye,
+  BookOpen,
+  ListChecks,
+  GitCompare,
+  Shield,
+  Camera,
+  BrainCircuit,
+  FileCheck,
 } from "lucide-react";
 import { getDashboardStats, getCropsData } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
@@ -99,7 +107,7 @@ export default async function DashboardOverview() {
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline" size="sm" className="gap-1.5">
-            <Link href="/dashboard/chat">
+            <Link href="/chat">
               <MessageSquare className="size-4" />
               Test AI Chat
             </Link>
@@ -197,7 +205,7 @@ export default async function DashboardOverview() {
               </Link>
 
               <Link
-                href="/dashboard/chat"
+                href="/chat"
                 className="group flex flex-col gap-3 rounded-xl border-2 border-dashed border-border p-4 hover:border-primary/50 hover:bg-primary/5 transition-all duration-150"
               >
                 <div className="flex size-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-colors">
@@ -243,6 +251,117 @@ export default async function DashboardOverview() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* How It Works Section */}
+      <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="flex flex-col items-start gap-4 rounded-lg border border-border p-6">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-600">
+            <Camera className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold">1. Provide Information</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              A farmer takes a photo of the affected crop using their phone or describes the symptoms.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start gap-4 rounded-lg border border-border p-6">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-600">
+            <BrainCircuit className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold">2. AI Analysis</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Our AI analyzes the data, identifies the crop, and searches its extensive knowledge base for matching diseases and conditions.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start gap-4 rounded-lg border border-border p-6">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-600">
+            <FileCheck className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold">3. Receive Your Report</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              The farmer receives a detailed report in the app, including the probable diagnosis, severity, treatment plans, and preventative measures.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="mt-12">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold tracking-tight">Powerful Tools for Healthy Crops</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Everything you need to diagnose and treat crop diseases, right at your fingertips.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="relative pl-16">
+            <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+              <Eye className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-base font-semibold">Visual Diagnosis</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Analyze images to identify crop type, symptoms, and potential diseases.
+            </p>
+          </div>
+
+          <div className="relative pl-16">
+            <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+              <MessageSquare className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-base font-semibold">Text-Based Consultation</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Describe symptoms and get a diagnosis directly in the app.
+            </p>
+          </div>
+
+          <div className="relative pl-16">
+            <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+              <BookOpen className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-base font-semibold">Comprehensive Knowledge Base</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Access a vast library of agricultural knowledge, curated by our admin team.
+            </p>
+          </div>
+
+          <div className="relative pl-16">
+            <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+              <ListChecks className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-base font-semibold">Actionable Recommendations</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Receive clear, easy-to-follow advice for both organic and chemical treatments.
+            </p>
+          </div>
+
+          <div className="relative pl-16">
+            <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+              <GitCompare className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-base font-semibold">Differential Diagnosis</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              If uncertain, provides a list of possible diseases to help further investigation.
+            </p>
+          </div>
+
+          <div className="relative pl-16">
+            <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-base font-semibold">Prevention Strategies</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Learn how to protect crops from future diseases with expert advice.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

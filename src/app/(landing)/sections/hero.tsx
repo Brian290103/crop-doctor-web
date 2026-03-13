@@ -20,8 +20,8 @@ export function Hero() {
               portal is the administrative dashboard for managing the AI.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center gap-6">
-              <Link href="#">
-                <Button size="lg">Learn More About the Mobile App</Button>
+              <Link href="/chat">
+                <Button size="lg">Try AI Chat Now</Button>
               </Link>
               <Link href="/dashboard">
                 <Button size="lg" variant="outline">

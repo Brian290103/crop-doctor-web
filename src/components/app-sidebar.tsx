@@ -51,7 +51,7 @@ const navItems = [
     items: [
       {
         name: "AI Chat",
-        url: "/dashboard/chat",
+        url: "/chat",
         icon: IconMessageChatbot,
         exact: false,
       },
