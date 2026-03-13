@@ -5,7 +5,7 @@ import { DefaultChatTransport } from "ai";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import React from "react";
-import { X, Upload } from "lucide-react";
+import { X, Upload, Camera } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -50,6 +50,7 @@ export default function ChatPage() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const { messages, sendMessage } = useChat({
     transport: new DefaultChatTransport({
@@ -278,16 +279,59 @@ export default function ChatPage() {
       {/* Input Area */}
       <div className="bg-white border-t border-gray-300 px-4 py-3">
         <form onSubmit={handleSubmit} className="flex gap-2 items-end">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-            accept="image/*"
-            className="hidden"
-              capture="environment"
-            disabled={isUploadingImage}
-          />
-          <button
+        {/* File Upload Input */}
+<input
+  type="file"
+  ref={fileInputRef}
+  onChange={handleImageUpload}
+  accept="image/*"
+  className="hidden"
+  disabled={isUploadingImage}
+/>
+
+{/* Camera Input */}
+<input
+  type="file"
+  ref={cameraInputRef}
+  onChange={handleImageUpload}
+  accept="image/*"
+  capture="environment"
+  className="hidden"
+  disabled={isUploadingImage}
+/>
+         {/* Mobile Camera Button */}
+<button
+  type="button"
+  onClick={() => cameraInputRef.current?.click()}
+  disabled={isLoading || isUploadingImage}
+  className="sm:hidden flex-shrink-0 p-2 rounded-full hover:bg-green-100 text-green-600"
+  title="Take photo"
+>
+  <Camera size={24} />
+</button>
+
+{/* Mobile Upload Button */}
+<button
+  type="button"
+  onClick={() => fileInputRef.current?.click()}
+  disabled={isLoading || isUploadingImage}
+  className="sm:hidden flex-shrink-0 p-2 rounded-full hover:bg-green-100 text-green-600"
+  title="Upload image"
+>
+  <Upload size={24} />
+</button>
+
+{/* Desktop Upload Button */}
+<button
+  type="button"
+  onClick={() => fileInputRef.current?.click()}
+  disabled={isLoading || isUploadingImage}
+  className="hidden sm:flex flex-shrink-0 p-2 rounded-full hover:bg-green-100 text-green-600"
+  title="Upload image"
+>
+  <Upload size={24} />
+</button>
+          {/* <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={isLoading || isUploadingImage}
@@ -295,7 +339,7 @@ export default function ChatPage() {
             title="Upload image"
           >
             <Upload size={24} />
-          </button>
+          </button> */}
           <div className="flex-1 flex items-center gap-2">
             <input
               type="text"
